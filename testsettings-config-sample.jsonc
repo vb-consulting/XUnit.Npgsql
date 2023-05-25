@@ -1,0 +1,64 @@
+{
+  "TestSettings": {
+
+    //
+    // Name of the connection string used for testing.
+    // This connection string should point to an actual development or test database. 
+    // The real test database is re-created based on this connection string.
+    // Connection string can be defined in this config file or in the config file defined by the ConfigPath value. 
+    //
+    "TestConnection": "DatabaseConnection",
+
+    //
+    // Path to the external JSON configuration file.
+    // External configuration is only used to parse the ConnectionStrings section.
+    // Use this setting to set TestConnection in a different configuration file, so that the connection string doesn't have to be duplicated.
+    //
+    "ConfigPath": "../../../../MyProject/appsettings.Development.json",
+
+    //
+    // Name of the database recreated on each testing session.
+    // Database on the server defined by the TestConnection with this name will be created before the first test starts and dropped after the last test ends.
+    // To make sure that the database with the name doesn't already exist on server a random guid is appended to this name.
+    //
+    "TestDatabaseName": "myapp_test",
+
+    //
+    // If set to true, the test database (defined by TestDatabaseName) - will not be created - but replicated by using database template from a TestConnection.
+    // Replicated database (using database template) has exactly the same schema and as well as the data as original database.
+    // If set to false, the test database is created as empty database and, if migrations are applied (if any).
+    //
+    "TestDatabaseFromTemplate": false,
+
+    //
+    // List of the SQL scripts to be executed in order after the test database has been created and just before the first test starts.
+    // This can be any SQL script file like migrations, schema, or data dumps.
+    //
+    "UpScripts": [ "../../../../MyProject/Scripts/schema.sql" ],
+
+    //
+    // List of the SQL scripts to be executed in order before the test database is dropped and after the last is finished.
+    //
+    "DownScripts": [],
+
+    //
+    // Set this to true to run each test in an isolated transaction.
+    // Transaction is created before each test starts and rolled back after each test finishes.
+    //
+    "UnitTestsUnderTransaction": true,
+
+    //
+    // Set this to true to disable constraint checking within the current transaction that runs each test.
+    // Constraint checking is disabled by executing constraints all deferred for each transaction.
+    //
+    "DisableConstraintCheckingForTransaction": true,
+
+    //
+    // Set this to true to run each unit test connection in a new and uniquely created database that is created by using a template from the test database. 
+    // New database is created as a template database from a test database before each test starts and dropped after the test finishes.
+    // That new database will be named the same as the test database plus a new guid.
+    // This settings cannot be combined with TestDatabaseFromTemplate, UnitTestsUnderTransaction, UpScripts and DownScripts
+    //
+    "UnitTestsNewDatabaseFromTemplate": false
+  }
+}

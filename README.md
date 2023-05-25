@@ -25,7 +25,7 @@ public class DatabaseCollection : ICollectionFixture<PostgreSqlUnitTestFixture> 
 
 4) Add configuration file to your XUnit Test Project project root named `testsettings.json`.
 
-- Note: see sample configuration file here: [testsettings.json sample](https://github.com/vb-consulting/XUnit.Npgsql/testsettings-config-sample.jsonc)
+- Note: see sample configuration file here: [testsettings.json sample](https://github.com/vb-consulting/XUnit.Npgsql/blob/master/testsettings-config-sample.jsonc)
 
 - Note: Make sure that configuration file is copied to output directory on build.
 
@@ -87,7 +87,7 @@ public class MyDatabaseTests : PostgreSqlUnitTest
 
 - Configuration file name must be either `testsettings.json`, `testsettings.Development.json`˙, `appsettings.json` or `appsettings.Development.json` in that order.
 
-- Note: see sample configuration file here: [testsettings.json sample](https://github.com/vb-consulting/XUnit.Npgsql/testsettings-config-sample.jsonc)
+- Note: see sample configuration file here: [testsettings.json sample](https://github.com/vb-consulting/XUnit.Npgsql/blob/master/testsettings-config-sample.jsonc)
 
 - Configuration can contain `ConnectionStrings` section
 

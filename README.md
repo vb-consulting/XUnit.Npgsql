@@ -173,7 +173,7 @@ public class CustomTestFixtures : PostgreSqlUnitTestFixture
         // override apply migrations method
         // this method is called twice: 
         // 1) from default constructor (after CreateTestDatabase) for up migrations
-        // 1) from Dispose method (before DropTestDatabase) for down migrations
+        // 2) from Dispose method (before DropTestDatabase) for down migrations
         base.ApplyMigrations(connection, scriptPaths);
     }
 }

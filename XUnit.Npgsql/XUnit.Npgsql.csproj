@@ -13,10 +13,10 @@
 	  <Description>XUnit Testing Suite for PostgreSQL Databases and .NET Standard 2.1 (SQL, user-defined functions, stored procedures, etc)</Description>
 	  <Copyright>VB-Consulting</Copyright>
 	  <PackageTags>XUnit;PostgreSQL;Npgsql;Test;Testing:Unit tests</PackageTags>
-	  <Version>1.0.1</Version>
-	  <AssemblyVersion>1.0.1</AssemblyVersion>
-	  <FileVersion>1.0.1</FileVersion>
-	  <PackageVersion>1.0.1</PackageVersion>
+	  <Version>1.0.2</Version>
+	  <AssemblyVersion>1.0.2</AssemblyVersion>
+	  <FileVersion>1.0.2</FileVersion>
+	  <PackageVersion>1.0.2</PackageVersion>
 	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	  <IncludeSymbols>true</IncludeSymbols>
 	  <PublishRepositoryUrl>true</PublishRepositoryUrl>

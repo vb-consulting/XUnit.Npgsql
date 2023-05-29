@@ -113,16 +113,68 @@ public class MyDatabaseTests : PostgreSqlUnitTest
 {
     public MyDatabaseTests(PostgreSqlUnitTestFixture tests) : base(
         tests,
-        newDatabaseFromTemplate: false,
-        testDatabaseName: "test_database_name",
-        underTransaction: true,
-        disableConstraintCheckingForTransaction: false) { }
-
+        // override "create new database from template" behavior for these tests
+        newDatabaseFromTemplate: false, 
+        // override test database name for these tests (if set name is exact, without guid)
+        testDatabaseName: "test_database_name", 
+        // override "run tests under transaction" behavior for these tests
+        underTransaction: true, 
+        // override "disable constraint checking for transaction" behavior for these tests
+        disableConstraintCheckingForTransaction: false 
+    ) { }
 
     [Fact]
     public void Test()
     {
-        // arrange, act, assert ...
+        // arrange
+        // act
+        // assert ...
+    }
+}
+```
+
+### Overriding configuration test fixtures class
+
+```csharp
+[CollectionDefinition("PostgreSqlDatabase")]
+public class TestCollection : ICollectionFixture<CustomTestFixtures> { }
+
+public class CustomTestFixtures : PostgreSqlUnitTestFixture
+{
+    public MyPostgreSqlUnitTestFixture() : base()
+    {
+        // override default constructor before tests are run
+        // this is executed once per project
+    }
+
+    public override void Dispose()
+    {
+        // override default dispose after tests are run
+        // this is executed once per project
+        base.Dispose();
+    }
+
+    public override void CreateTestDatabase(NpgsqlConnection connection)
+    {
+        // override creating test database for all tests or call base method (that creates database from configuration)
+        // CreateTestDatabase is called from default constructor
+        base.CreateTestDatabase(connection);
+    }
+
+    public override void DropTestDatabase(NpgsqlConnection connection)
+    {
+        // override dropping test database for all tests or call base method (that creates database from configuration)
+        // DropTestDatabase is called from Dispose method
+        base.DropTestDatabase(connection);
+    }
+
+    public override void ApplyMigrations(NpgsqlConnection connection, List<string> scriptPaths)
+    {
+        // override apply migrations method
+        // this method is called twice: 
+        // 1) from default constructor (after CreateTestDatabase) for up migrations
+        // 1) from Dispose method (before DropTestDatabase) for down migrations
+        base.ApplyMigrations(connection, scriptPaths);
     }
 }
 ```

@@ -12,6 +12,7 @@ namespace XUnit.Npgsql
     [Collection("PostgreSqlDatabase")]
     public abstract class PostgreSqlUnitTest : IDisposable
     {
+        private readonly PostgreSqlUnitTestFixture tests;
         private readonly bool newDatabaseFromTemplate;
         private readonly bool underTransaction;
 
@@ -24,6 +25,7 @@ namespace XUnit.Npgsql
             bool? underTransaction = null,
             bool? disableConstraintCheckingForTransaction = null)
         {
+            this.tests = tests;
             this.newDatabaseFromTemplate = newDatabaseFromTemplate ?? Config.Value.UnitTestsNewDatabaseFromTemplate;
             this.underTransaction = underTransaction ?? Config.Value.UnitTestsUnderTransaction;
 
@@ -31,7 +33,7 @@ namespace XUnit.Npgsql
             {
                 var dbName = testDatabaseName ?? string.Concat(Config.Value.TestDatabaseName, "_", Guid.NewGuid().ToString()[..8]);
                 using var connection = new NpgsqlConnection(Config.ConnectionString);
-                PostgreSqlUnitTestFixture.CreateDatabase(connection, dbName, connection.Database);
+                tests.CreateDatabase(connection, dbName, connection.Database);
                 Connection = tests.Connection.CloneWith(tests.Connection.ConnectionString);
                 Connection.Open();
                 Connection.ChangeDatabase(dbName);
@@ -46,11 +48,11 @@ namespace XUnit.Npgsql
                 bool disableConstraints = disableConstraintCheckingForTransaction ?? Config.Value.DisableConstraintCheckingForTransaction;
                 if (disableConstraints)
                 {
-                    PostgreSqlUnitTestFixture.Execute(Connection, "begin; set constraints all deferred;");
+                    tests.Execute(Connection, "begin; set constraints all deferred;");
                 }
                 else
                 {
-                    PostgreSqlUnitTestFixture.Execute(Connection, "begin");
+                    tests.Execute(Connection, "begin");
                 }
             }
         }
@@ -59,14 +61,14 @@ namespace XUnit.Npgsql
         {
             if (this.underTransaction)
             {
-                PostgreSqlUnitTestFixture.Execute(Connection, "rollback");
+                tests.Execute(Connection, "rollback");
             }
             Connection.Close();
             Connection.Dispose();
             if (this.newDatabaseFromTemplate)
             {
                 using var connection = new NpgsqlConnection(Config.ConnectionString);
-                PostgreSqlUnitTestFixture.DropDatabase(connection, Connection.Database);
+                tests.DropDatabase(connection, Connection.Database);
             }
         }
     }

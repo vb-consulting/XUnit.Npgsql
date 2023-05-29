@@ -8,7 +8,7 @@ using Npgsql;
 namespace XUnit.Npgsql
 {
 
-    public sealed class PostgreSqlUnitTestFixture : IDisposable
+    public class PostgreSqlUnitTestFixture : IDisposable
     {
         public NpgsqlConnection Connection { get; }
 
@@ -20,7 +20,7 @@ namespace XUnit.Npgsql
             ApplyMigrations(Connection, Config.Value.UpScripts);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             ApplyMigrations(Connection, Config.Value.DownScripts);
             Connection.Close();
@@ -29,7 +29,32 @@ namespace XUnit.Npgsql
             DropTestDatabase(connection);
         }
 
-        public static void Execute(NpgsqlConnection connection, string command)
+        public virtual void CreateTestDatabase(NpgsqlConnection connection)
+        {
+            if (Config.Value.TestDatabaseFromTemplate)
+            {
+                CreateDatabase(connection, Config.Value.TestDatabaseName, connection.Database);
+            }
+            else
+            {
+                CreateDatabase(connection, Config.Value.TestDatabaseName);
+            }
+        }
+
+        public virtual void DropTestDatabase(NpgsqlConnection connection)
+        {
+            DropDatabase(connection, Config.Value.TestDatabaseName);
+        }
+
+        public virtual void ApplyMigrations(NpgsqlConnection connection, List<string> scriptPaths)
+        {
+            foreach (var path in scriptPaths)
+            {
+                Execute(connection, File.ReadAllText(path));
+            }
+        }
+        
+        internal void Execute(NpgsqlConnection connection, string command)
         {
             using var cmd = connection.CreateCommand();
             if (connection.State != System.Data.ConnectionState.Open)
@@ -40,14 +65,14 @@ namespace XUnit.Npgsql
             cmd.ExecuteNonQuery();
         }
 
-        public static void DropDatabase(NpgsqlConnection connection, string database)
+        internal void DropDatabase(NpgsqlConnection connection, string database)
         {
             Execute(connection, $@"
         {RevokeUsersCmd(database)}
         drop database {database};");
         }
 
-        public static void CreateDatabase(NpgsqlConnection connection, string database, string template = null)
+        internal void CreateDatabase(NpgsqlConnection connection, string database, string template = null)
         {
             void DoCreate() => Execute(connection, $"create database {database}{(template == null ? "" : $" template {template}")}");
             if (template != null)
@@ -66,30 +91,6 @@ namespace XUnit.Npgsql
             }
         }
 
-        private static void CreateTestDatabase(NpgsqlConnection connection)
-        {
-            if (Config.Value.TestDatabaseFromTemplate)
-            {
-                CreateDatabase(connection, Config.Value.TestDatabaseName, connection.Database);
-            }
-            else
-            {
-                CreateDatabase(connection, Config.Value.TestDatabaseName);
-            }
-        }
-
-        private static void DropTestDatabase(NpgsqlConnection connection)
-        {
-            DropDatabase(connection, Config.Value.TestDatabaseName);
-        }
-
-        private static void ApplyMigrations(NpgsqlConnection connection, List<string> scriptPaths)
-        {
-            foreach (var path in scriptPaths)
-            {
-                Execute(connection, File.ReadAllText(path));
-            }
-        }
         private static string RevokeUsersCmd(string database)
         {
             return 

@@ -192,6 +192,12 @@ xunit >= 2.0.0
 
 ## Changelog
 
+## [1.1.1](https://github.com/vb-consulting/XUnit.Npgsql/tree/1.1.1) (2023-08-27)
+
+[Full Changelog](https://github.com/vb-consulting/XUnit.Npgsql/compare/1.1.0...1.1.1)
+
+If `SkipCreateTestDatabase` is true and `TestDatabaseName` is set, change the connection database to `TestDatabaseName` instead of the default database.
+
 ## [1.1.0](https://github.com/vb-consulting/XUnit.Npgsql/tree/1.1.0) (2023-08-27)
 
 [Full Changelog](https://github.com/vb-consulting/XUnit.Npgsql/compare/1.0.2...1.1.0)

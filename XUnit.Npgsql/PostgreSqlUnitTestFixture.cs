@@ -18,6 +18,9 @@ namespace XUnit.Npgsql
             if (!Config.Value.SkipCreateTestDatabase)
             {
                 CreateTestDatabase(Connection);
+            }
+            if (Config.Value.TestDatabaseName != null && Config.Value.TestDatabaseName != Connection.Database)
+            {
                 Connection.ChangeDatabase(Config.Value.TestDatabaseName);
             }
             ApplyMigrations(Connection, Config.Value.UpScripts);

@@ -21,6 +21,8 @@
     // Database on the server defined by the TestConnection with this name will be created before the first test starts and dropped after the last test ends.
     // To make sure that the database with the name doesn't already exist on server a random guid is appended to this name.
     //
+    // If SkipCreateTestDatabase is set to true, random guid is appended to this name and test database is set to this database name.
+    // 
     "TestDatabaseName": "myapp_test",
 
     //

@@ -13,6 +13,7 @@ namespace XUnit.Npgsql
         public string TestConnection { get; set; }
         public string ConfigPath { get; set; }
         public string TestDatabaseName { get; set; }
+        public bool SkipCreateTestDatabase { get; set; }
         public bool TestDatabaseFromTemplate { get; set; }
         public List<string> UpScripts { get; set; } = new List<string>();
         public List<string> DownScripts { get; set; } = new List<string>();
@@ -33,6 +34,26 @@ namespace XUnit.Npgsql
                 .AddJsonFile("appsettings.Development.json", true, false)
                 .Build();
             config.GetSection("TestSettings").Bind(Value);
+
+            ValidateAndThrow();
+
+            string? externalConnectionString = null;
+            if (Value.ConfigPath != null && File.Exists(Value.ConfigPath))
+            {
+                var external = new ConfigurationBuilder().AddJsonFile(Path.Join(Directory.GetCurrentDirectory(), Value.ConfigPath), false, false).Build();
+                externalConnectionString = external.GetConnectionString(Value.TestConnection);
+            }
+            ConnectionString = config.GetConnectionString(Value.TestConnection) ?? externalConnectionString;
+
+            // append random number to test database name to avoid conflicts, only if we choose to create new test database
+            if (!Value.SkipCreateTestDatabase)
+            {
+                Value.TestDatabaseName = string.Concat(Value.TestDatabaseName, "_", Guid.NewGuid().ToString()[..8]);
+            }
+        }
+
+        private static void ValidateAndThrow()
+        {
             if (Value.TestDatabaseFromTemplate && Value.UnitTestsNewDatabaseFromTemplate)
             {
                 throw new ArgumentException(@"Configuration settings TestDatabaseFromTemplate=true and UnitTestsNewDatabaseFromTemplate=true doesn't make any sense.
@@ -56,15 +77,12 @@ Set one of UnitTestsNewDatabaseFromTemplate or clear UpScripts and DownScripts."
                 throw new ArgumentException(@"Configuration settings DisableConstraintCheckingForTransaction=true and UnitTestsUnderTransaction=false doesn't make any sense.
 Disabling constraint checking works only under transaction.");
             }
-            string? externalConnectionString = null;
-            if (Value.ConfigPath != null && File.Exists(Value.ConfigPath))
-            {
-                var external = new ConfigurationBuilder().AddJsonFile(Path.Join(Directory.GetCurrentDirectory(), Value.ConfigPath), false, false).Build();
-                externalConnectionString = external.GetConnectionString(Value.TestConnection);
-            }
-            ConnectionString = config.GetConnectionString(Value.TestConnection) ?? externalConnectionString;
 
-            Value.TestDatabaseName = string.Concat(Value.TestDatabaseName, "_", Guid.NewGuid().ToString()[..8]);
+            if (Value.SkipCreateTestDatabase && Value.TestDatabaseFromTemplate)
+            {
+                throw new ArgumentException(@"Configuration settings SkipCreateTestDatabase=true and TestDatabaseFromTemplate=true doesn't make any sense.
+You can't create a template database if you choose to skip creating a test database");
+            }
         }
     }
 }

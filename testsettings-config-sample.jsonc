@@ -24,6 +24,14 @@
     "TestDatabaseName": "myapp_test",
 
     //
+    // Set to true to skip the creation of the test database.
+    // The database from the connection string will be used directly and no test database will be created or dropped.
+    // This doesn't apply to UnitTestsNewDatabaseFromTemplate setting will create and drop new template database from this database on each unit test.
+    // This settings cannot be combined with TestDatabaseFromTemplate because the you can't create a template database if you choose to skip creating a test database.
+    //
+    "SkipCreateTestDatabase": false,
+
+    //
     // If set to true, the test database (defined by TestDatabaseName) - will not be created - but replicated by using database template from a TestConnection.
     // Replicated database (using database template) has exactly the same schema and as well as the data as original database.
     // If set to false, the test database is created as empty database and, if migrations are applied (if any).

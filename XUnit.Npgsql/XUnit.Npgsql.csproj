@@ -13,10 +13,10 @@
 	  <Description>XUnit Testing Suite for PostgreSQL Databases and .NET Standard 2.1 (SQL, user-defined functions, stored procedures, etc)</Description>
 	  <Copyright>VB-Consulting</Copyright>
 	  <PackageTags>XUnit;PostgreSQL;Npgsql;Test;Testing:Unit tests</PackageTags>
-	  <Version>1.0.2</Version>
-	  <AssemblyVersion>1.0.2</AssemblyVersion>
-	  <FileVersion>1.0.2</FileVersion>
-	  <PackageVersion>1.0.2</PackageVersion>
+	  <Version>1.1.0</Version>
+	  <AssemblyVersion>1.1.0</AssemblyVersion>
+	  <FileVersion>1.1.0</FileVersion>
+	  <PackageVersion>1.1.0</PackageVersion>
 	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	  <IncludeSymbols>true</IncludeSymbols>
 	  <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -27,10 +27,11 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FluentAssertions" Version="6.12.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-		<PackageReference Include="Npgsql" Version="7.0.0" />
+		<PackageReference Include="Npgsql" Version="6.0.0" />
 		<PackageReference Include="xunit" Version="2.0.0" />
 	</ItemGroup>
 

@@ -95,7 +95,8 @@ public class MyDatabaseTests : PostgreSqlUnitTest
 
   - `TestConnection` - connection string name from `ConnectionStrings` section to the test database.
   - `ConfigPath` - path to the configuration file. This is useful when you want to use different configuration file for different environments. e.g. `ConfigPath: "appsettings.Development.json"`
-  - `TestDatabaseName` - name of the test database. Default connection is used for server and this name for database name. If not specified, test database will be created with random name. If it is specified name will be appended with random string to ensure that test database is unique. This database is recreated and dropped on every test session.
+  - `TestDatabaseName` - name of the test database. Default connection is used for server and this name for database name. If not specified, test database will be created with random name. If it is specified name will be appended with random string to ensure that test database is unique. This database is recreated and dropped on every test session unless `SkipCreateTestDatabase` is set to true.
+  - `SkipCreateTestDatabase` - skip creating and dropping test database. Default is false.
   - `TestDatabaseFromTemplate` - If set to true, the test database will be created from a [template database](https://www.postgresql.org/docs/current/manage-ag-templatedbs.html). PostgreSQL can create a new database from a template database together with data, very fast.
   - `UpScripts` - list of scripts to run before tests. Scripts are run in order. 
   - `DownScripts` - list of scripts to run after tests. Scripts are run in order.

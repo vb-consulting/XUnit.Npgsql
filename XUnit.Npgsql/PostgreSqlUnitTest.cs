@@ -15,6 +15,7 @@ namespace XUnit.Npgsql
         private readonly PostgreSqlUnitTestFixture tests;
         private readonly bool newDatabaseFromTemplate;
         private readonly bool underTransaction;
+        private static ulong counter = 0;
 
         public NpgsqlConnection Connection { get; private set; }
 
@@ -31,7 +32,7 @@ namespace XUnit.Npgsql
 
             if (this.newDatabaseFromTemplate)
             {
-                var dbName = testDatabaseName ?? string.Concat(Config.Value.TestDatabaseName, "_", Guid.NewGuid().ToString()[..8]);
+                var dbName = testDatabaseName ?? string.Concat(Config.Value.TestDatabaseName, "_", Guid.NewGuid().ToString()[..8], "_", (++counter).ToString());
                 using var connection = new NpgsqlConnection(Config.ConnectionString);
                 tests.CreateDatabase(connection, dbName, connection.Database);
                 Connection = tests.Connection.CloneWith(tests.Connection.ConnectionString);

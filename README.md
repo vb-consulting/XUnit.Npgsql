@@ -192,6 +192,12 @@ xunit >= 2.0.0
 
 ## Changelog
 
+## [1.1.2](https://github.com/vb-consulting/XUnit.Npgsql/tree/1.1.2) (2023-08-27)
+
+[Full Changelog](https://github.com/vb-consulting/XUnit.Npgsql/compare/1.1.1...1.1.2)
+
+Add default value to config and check is string null or empty.
+
 ## [1.1.1](https://github.com/vb-consulting/XUnit.Npgsql/tree/1.1.1) (2023-08-27)
 
 [Full Changelog](https://github.com/vb-consulting/XUnit.Npgsql/compare/1.1.0...1.1.1)

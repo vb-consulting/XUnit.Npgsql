@@ -19,7 +19,7 @@ namespace XUnit.Npgsql
             {
                 CreateTestDatabase(Connection);
             }
-            if (Config.Value.TestDatabaseName != null && Config.Value.TestDatabaseName != Connection.Database)
+            if (!string.IsNullOrEmpty(Config.Value.TestDatabaseName) && Config.Value.TestDatabaseName != Connection.Database)
             {
                 Connection.ChangeDatabase(Config.Value.TestDatabaseName);
             }

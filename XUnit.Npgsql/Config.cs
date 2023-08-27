@@ -13,13 +13,13 @@ namespace XUnit.Npgsql
         public string TestConnection { get; set; }
         public string ConfigPath { get; set; }
         public string TestDatabaseName { get; set; }
-        public bool SkipCreateTestDatabase { get; set; }
-        public bool TestDatabaseFromTemplate { get; set; }
+        public bool SkipCreateTestDatabase { get; set; } = false;
+        public bool TestDatabaseFromTemplate { get; set; } = false;
         public List<string> UpScripts { get; set; } = new List<string>();
         public List<string> DownScripts { get; set; } = new List<string>();
-        public bool UnitTestsUnderTransaction { get; set; }
-        public bool DisableConstraintCheckingForTransaction { get; set; }
-        public bool UnitTestsNewDatabaseFromTemplate { get; set; }
+        public bool UnitTestsUnderTransaction { get; set; } = true;
+        public bool DisableConstraintCheckingForTransaction { get; set; } = true;
+        public bool UnitTestsNewDatabaseFromTemplate { get; set; } = false;
 
         public static Config Value { get; }
         public static string ConnectionString { get; }
@@ -38,7 +38,7 @@ namespace XUnit.Npgsql
             ValidateAndThrow();
 
             string? externalConnectionString = null;
-            if (Value.ConfigPath != null && File.Exists(Value.ConfigPath))
+            if (!string.IsNullOrEmpty(Value.ConfigPath) && File.Exists(Value.ConfigPath))
             {
                 var external = new ConfigurationBuilder().AddJsonFile(Path.Join(Directory.GetCurrentDirectory(), Value.ConfigPath), false, false).Build();
                 externalConnectionString = external.GetConnectionString(Value.TestConnection);

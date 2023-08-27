@@ -190,6 +190,27 @@ Npgsq >= 7.0.0
 xunit >= 2.0.0
 ```
 
+## Changelog
+
+## [1.1.0](https://github.com/vb-consulting/XUnit.Npgsql/tree/1.1.0) (2023-08-27)
+
+[Full Changelog](https://github.com/vb-consulting/XUnit.Npgsql/compare/1.0.2...1.1.0)
+
+### New setting SkipCreateTestDatabase
+
+Set to true to skip the creation of the test database.
+
+The database from the connection string will be used directly and no test database will be created or dropped.
+
+This doesn't apply to `UnitTestsNewDatabaseFromTemplate` setting will create and drop new template database from this database on each unit test.
+This settings cannot be combined with `TestDatabaseFromTemplate` because the you can't create a template database if you choose to skip creating a test database.
+
+### Improvements
+
+- Fixed strange PostgreSQL bug where test database can't be dropped because PostgreSQL thinks it's in pipeline mode (although it isn't).
+
+- Add global counter for test database name when using `TestDatabaseFromTemplate` for each unit tests (besides timestamps guid).
+
 ## Currently supported platforms
  
 - .NET Standard 2.1

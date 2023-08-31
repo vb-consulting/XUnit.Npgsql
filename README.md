@@ -180,6 +180,17 @@ public class CustomTestFixtures : PostgreSqlUnitTestFixture
 }
 ```
 
+And, change the reference in the unit test:
+
+```cs
+public class MyDatabaseTests : PostgreSqlUnitTest
+{
+    public MyDatabaseTests(CustomTestFixtures tests) : base(tests) { }
+
+    // the rest of the tests
+}
+```
+
 ## Dependencies
 
 ```

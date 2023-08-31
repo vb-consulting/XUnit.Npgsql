@@ -142,7 +142,7 @@ public class TestCollection : ICollectionFixture<CustomTestFixtures> { }
 
 public class CustomTestFixtures : PostgreSqlUnitTestFixture
 {
-    public MyPostgreSqlUnitTestFixture() : base()
+    public CustomTestFixtures() : base()
     {
         // override default constructor before tests are run
         // this is executed once per project

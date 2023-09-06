@@ -192,6 +192,14 @@ xunit >= 2.0.0
 
 ## Changelog
 
+## [1.1.3](https://github.com/vb-consulting/XUnit.Npgsql/tree/1.1.3) (2023-09-06)
+
+[Full Changelog](https://github.com/vb-consulting/XUnit.Npgsql/compare/1.1.2...1.1.3)
+
+Expose `IConfigurationRoot` as static public readonly property of ťhe `Config`  class.
+
+This is useful to access custom configuiration values without having to load configuiration file again (e.g. `Config.ConfigurationRoot.GetConnectionString("AdminConnection")`)
+
 ## [1.1.2](https://github.com/vb-consulting/XUnit.Npgsql/tree/1.1.2) (2023-08-27)
 
 [Full Changelog](https://github.com/vb-consulting/XUnit.Npgsql/compare/1.1.1...1.1.2)

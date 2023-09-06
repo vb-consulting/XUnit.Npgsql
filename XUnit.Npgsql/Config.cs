@@ -22,18 +22,19 @@ namespace XUnit.Npgsql
         public bool UnitTestsNewDatabaseFromTemplate { get; set; } = false;
 
         public static Config Value { get; }
+        public static IConfigurationRoot ConfigurationRoot { get; }
         public static string ConnectionString { get; }
 
         static Config()
         {
             Value = new Config();
-            var config = new ConfigurationBuilder()
+            ConfigurationRoot = new ConfigurationBuilder()
                 .AddJsonFile("testsettings.json", optional: true, false)
                 .AddJsonFile("testsettings.Development.json", true, false)
                 .AddJsonFile("appsettings.json", true, false)
                 .AddJsonFile("appsettings.Development.json", true, false)
                 .Build();
-            config.GetSection("TestSettings").Bind(Value);
+            ConfigurationRoot.GetSection("TestSettings").Bind(Value);
 
             ValidateAndThrow();
 
@@ -43,7 +44,7 @@ namespace XUnit.Npgsql
                 var external = new ConfigurationBuilder().AddJsonFile(Path.Join(Directory.GetCurrentDirectory(), Value.ConfigPath), false, false).Build();
                 externalConnectionString = external.GetConnectionString(Value.TestConnection);
             }
-            ConnectionString = config.GetConnectionString(Value.TestConnection) ?? externalConnectionString;
+            ConnectionString = ConfigurationRoot.GetConnectionString(Value.TestConnection) ?? externalConnectionString;
 
             // append random number to test database name to avoid conflicts, only if we choose to create new test database
             if (!Value.SkipCreateTestDatabase)

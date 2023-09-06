@@ -142,7 +142,7 @@ public class TestCollection : ICollectionFixture<CustomTestFixtures> { }
 
 public class CustomTestFixtures : PostgreSqlUnitTestFixture
 {
-    public MyPostgreSqlUnitTestFixture() : base()
+    public CustomTestFixtures() : base()
     {
         // override default constructor before tests are run
         // this is executed once per project
@@ -177,6 +177,17 @@ public class CustomTestFixtures : PostgreSqlUnitTestFixture
         // 2) from Dispose method (before DropTestDatabase) for down migrations
         base.ApplyMigrations(connection, scriptPaths);
     }
+}
+```
+
+And, change the reference in the unit test:
+
+```cs
+public class MyDatabaseTests : PostgreSqlUnitTest
+{
+    public MyDatabaseTests(CustomTestFixtures tests) : base(tests) { }
+
+    // the rest of the tests
 }
 ```
 

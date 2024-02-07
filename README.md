@@ -12,7 +12,7 @@ _XUnit Unit Testing for PostgreSQL Databases and .NET Standard 2.1_
  
 3) Add new collection fixture to your project:
 
-```cs
+```csharp
 using XUnit.Npgsql;
 
 [CollectionDefinition("PostgreSqlDatabase")]
@@ -33,7 +33,7 @@ public class DatabaseCollection : ICollectionFixture<PostgreSqlUnitTestFixture> 
 
 Note: test class must inherit `PostgreSqlUnitTest` class.
 
-```cs
+```csharp
 using XUnit.Npgsql;
 using Norm;
 
@@ -106,7 +106,7 @@ public class MyDatabaseTests : PostgreSqlUnitTest
 
 ### Overriding configuration in test class
 
-```cs
+```csharp
 using XUnit.Npgsql;
 using Norm;
 
@@ -136,7 +136,7 @@ public class MyDatabaseTests : PostgreSqlUnitTest
 
 ### Overriding configuration test fixtures class
 
-```cs
+```csharp
 [CollectionDefinition("PostgreSqlDatabase")]
 public class TestCollection : ICollectionFixture<CustomTestFixtures> { }
 
@@ -182,7 +182,7 @@ public class CustomTestFixtures : PostgreSqlUnitTestFixture
 
 And, change the reference in the unit test:
 
-```cs
+```csharp
 public class MyDatabaseTests : PostgreSqlUnitTest
 {
     public MyDatabaseTests(CustomTestFixtures tests) : base(tests) { }
